@@ -1,7 +1,7 @@
 package com.sergiofierro.mailapp.di
 
 import com.sergiofierro.mailapp.BuildConfig
-import com.sergiofierro.mailapp.networking.api.CommentsApi
+import com.sergiofierro.mailapp.networking.api.CommentApi
 import com.sergiofierro.mailapp.networking.api.PostApi
 import com.sergiofierro.mailapp.networking.api.UserApi
 import dagger.Module
@@ -36,13 +36,13 @@ object NetworkModule {
 
   @Provides
   @Singleton
-  fun providePostAPI(retrofit: Retrofit): PostApi = retrofit.create(PostApi::class.java)
+  fun providePostApi(retrofit: Retrofit): PostApi = retrofit.create(PostApi::class.java)
 
   @Provides
   @Singleton
-  fun provideUserAPI(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
+  fun provideUserApi(retrofit: Retrofit): UserApi = retrofit.create(UserApi::class.java)
 
   @Provides
   @Singleton
-  fun provideCommentsAPI(retrofit: Retrofit): CommentsApi = retrofit.create(CommentsApi::class.java)
+  fun provideCommentsApi(retrofit: Retrofit): CommentApi = retrofit.create(CommentApi::class.java)
 }

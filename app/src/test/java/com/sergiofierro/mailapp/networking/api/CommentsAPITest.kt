@@ -6,13 +6,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class CommentsAPITest : BaseApiTest<CommentsApi>() {
+class CommentsAPITest : BaseApiTest<CommentApi>() {
 
-  private lateinit var service: CommentsApi
+  private lateinit var service: CommentApi
 
   @Before
   fun setup() {
-    service = createService(CommentsApi::class.java)
+    service = createService(CommentApi::class.java)
   }
 
   @Test

@@ -10,6 +10,9 @@ interface UserDao : BaseDao<User> {
   @Query("SELECT * FROM User")
   fun getAll(): List<User>
 
+  @Query("SELECT * FROM User WHERE id=:id")
+  fun get(id: Int): User?
+
   @Query("DELETE FROM User")
   fun deleteAll()
 }
