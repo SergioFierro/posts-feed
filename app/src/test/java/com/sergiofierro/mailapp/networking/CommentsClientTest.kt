@@ -2,13 +2,13 @@ package com.sergiofierro.mailapp.networking
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import com.sergiofierro.mailapp.networking.api.CommentsAPI
+import com.sergiofierro.mailapp.networking.api.CommentsApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 class CommentsClientTest {
 
-  private val api: CommentsAPI = mock()
+  private val api: CommentsApi = mock()
   private val client = CommentsClient(api)
 
   @Test

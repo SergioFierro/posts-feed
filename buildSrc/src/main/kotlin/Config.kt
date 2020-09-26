@@ -16,6 +16,9 @@ object Config {
     const val lifecycleViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
     const val lifecycleSavedState = "androidx.lifecycle:lifecycle-viewmodel-savedstate:${Versions.lifecycle}"
     const val fragment = "androidx.fragment:fragment-ktx:${Versions.fragment}"
+    const val roomRuntime = "androidx.room:room-runtime:${Versions.room}"
+    const val roomKtx = "androidx.room:room-ktx:${Versions.room}"
+    const val roomKapt = "androidx.room:room-compiler:${Versions.room}"
 
     // network
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
@@ -80,6 +83,7 @@ object Config {
     const val daggerHilt = "1.0.0-alpha02"
     const val lifecycle = "2.2.0"
     const val fragment = "1.2.5"
+    const val room = "2.2.5"
     const val robolectric = "4.3.1"
     const val mockitoKotlin = "2.2.0"
     const val mockitoInline = "3.3.3"

@@ -6,13 +6,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class UserAPITest : BaseApiTest<UserAPI>() {
+class UserAPITest : BaseApiTest<UserApi>() {
 
-  private lateinit var service: UserAPI
+  private lateinit var service: UserApi
 
   @Before
   fun setup() {
-    service = createService(UserAPI::class.java)
+    service = createService(UserApi::class.java)
   }
 
   @Test

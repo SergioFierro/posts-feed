@@ -27,7 +27,7 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
-  
+
   buildFeatures {
     dataBinding = true
   }
@@ -74,6 +74,9 @@ dependencies {
   implementation(Config.Dependencies.lifecycleViewModel)
   implementation(Config.Dependencies.lifecycleSavedState)
   implementation(Config.Dependencies.fragment)
+  implementation(Config.Dependencies.roomRuntime)
+  implementation(Config.Dependencies.roomKtx)
+  kapt(Config.Dependencies.roomKapt)
 
   // network
   implementation(Config.Dependencies.retrofit)
