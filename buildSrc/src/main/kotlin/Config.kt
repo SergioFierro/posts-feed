@@ -7,7 +7,6 @@ object Config {
     const val constraintLayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}"
     const val recyclerview = "androidx.recyclerview:recyclerview:${Versions.recyclerview}"
     const val material = "com.google.android.material:material:${Versions.material}"
-    const val glide = "com.github.bumptech.glide:glide:${Versions.glide}"
     const val junit = "junit:junit:${Versions.junit}"
 
     // architecture components
@@ -42,7 +41,6 @@ object Config {
     const val robolectric = "org.robolectric:robolectric:${Versions.robolectric}"
     const val coreTesting = "androidx.arch.core:core-testing:${Versions.coreTesting}"
     const val core = "androidx.test:core:${Versions.core}"
-    const val turbine = "app.cash.turbine:turbine:${Versions.turbine}"
     const val coroutinesAndroidTest = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesTest}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
     const val testCore = "androidx.test:core:${Versions.testCore}"
@@ -60,8 +58,6 @@ object Config {
     const val daggerHiltGradle = "com.google.dagger:hilt-android-gradle-plugin:${Versions.daggerHiltAndroid}"
     const val daggerHiltAndroid = "dagger.hilt.android.plugin"
     const val kapt = "kapt"
-    const val spotless = "plugins.spotless"
-    const val ktlint = "plugins.ktlint"
   }
 
   object Versions {
@@ -73,7 +69,7 @@ object Config {
     const val buildTools = "29.0.3"
     const val androidCore = "1.3.1"
     const val appcompat = "1.2.0"
-    const val constraintLayout = "2.0.0"
+    const val constraintLayout = "2.0.1"
     const val recyclerview = "1.1.0"
     const val junit = "4.12"
     const val retrofit = "2.9.0"
@@ -89,10 +85,8 @@ object Config {
     const val mockitoInline = "3.3.3"
     const val coreTesting = "2.1.0"
     const val core = "1.3.0"
-    const val turbine = "0.2.0"
     const val material = "1.2.0"
     const val coroutinesTest = "1.3.7"
-    const val glide = "4.11.0"
     const val testCore = "1.3.0"
     const val truth = "1.0.1"
     const val junitExt = "1.1.2"

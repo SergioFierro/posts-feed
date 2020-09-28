@@ -1,69 +1,50 @@
 package com.sergiofierro.mailapp.repository
 
-import app.cash.turbine.test
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import com.sergiofierro.mailapp.data.Result
+import com.sergiofierro.mailapp.data.local.CommentLocalDataSource
+import com.sergiofierro.mailapp.data.remote.CommentRemoteDataSource
 import com.sergiofierro.mailapp.model.Comment
-import com.sergiofierro.mailapp.networking.CommentClient
-import com.sergiofierro.mailapp.persistence.dao.CommentDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.IOException
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
-@ExperimentalCoroutinesApi
 class CommentRepositoryTest {
 
-  private val commentClient: CommentClient = mock()
-  private val commentDao: CommentDao = mock()
-  private val commentRepository = CommentRepository(commentClient, commentDao)
+  private val remoteDataSource: CommentRemoteDataSource = mock()
+  private val localDataSource: CommentLocalDataSource = mock()
+  private val repository = CommentRepository(remoteDataSource, localDataSource)
 
   @Test
-  fun `Fetch comments with no comments stored should call api and return expected items`() {
+  fun `Fetch comments should call api and return expected items`() {
     runBlocking {
       val postId = 123
-      val expectedResponse = listOf<Comment>(mock())
-      whenever(commentDao.getByPostId(postId)).thenReturn(emptyList())
-      whenever(commentClient.fetchComments(postId)).thenReturn(expectedResponse)
-      commentRepository.fetchComments(postId).test {
-        assertEquals(expectedResponse.size, expectItem().size)
-        expectComplete()
-      }
-      verify(commentDao).getByPostId(postId)
-      verify(commentClient).fetchComments(postId)
+      val comments = listOf<Comment>(mock())
+      whenever(remoteDataSource.fetchComments(postId)).thenReturn(Result.Success(comments))
+      whenever(localDataSource.getByPostId(postId)).thenReturn(Result.Success(comments))
+      val result = repository.fetchComments(postId)
+      verify(localDataSource).save(comments)
+      assertTrue(result is Result.Success)
+      assertEquals(comments, (result as Result.Success).data)
     }
   }
 
   @Test
-  fun `Fetch comments from database should return expected items`() {
+  fun `Fetch comments should return error`() {
     runBlocking {
       val postId = 123
-      val expectedResponse = listOf<Comment>(mock())
-      whenever(commentDao.getByPostId(postId)).thenReturn(expectedResponse)
-      commentRepository.fetchComments(postId).test {
-        assertEquals(expectedResponse.size, expectItem().size)
-        expectComplete()
-      }
-      verify(commentDao).getByPostId(postId)
-      verify(commentClient, never()).fetchComments(any())
-    }
-  }
-
-  @InternalCoroutinesApi
-  @Test
-  fun `Fetch comments with exception should fail`() {
-    runBlocking {
       val expectedError = IOException()
-      given(commentClient.fetchComments(any())).willAnswer {
+      given(remoteDataSource.fetchComments(postId)).willAnswer {
         throw expectedError
       }
-      commentRepository.fetchComments(123).test {
-        assertEquals(expectedError::class.java, expectError()::class.java)
-      }
-      verify(commentClient).fetchComments(any())
+      val result = repository.fetchComments(postId)
+      assertTrue(result is Result.Error)
+      assertEquals(expectedError, (result as Result.Error).exception)
     }
   }
 }

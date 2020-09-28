@@ -66,7 +66,6 @@ dependencies {
   implementation(Config.Dependencies.constraintLayout)
   implementation(Config.Dependencies.recyclerview)
   implementation(Config.Dependencies.material)
-  implementation(Config.Dependencies.glide)
 
   // architecture components
   implementation(Config.Dependencies.lifecycleExtensions)
@@ -102,7 +101,6 @@ dependencies {
   testImplementation(Config.Dependencies.robolectric)
   testImplementation(Config.Dependencies.coreTesting)
   testImplementation(Config.Dependencies.core)
-  testImplementation(Config.Dependencies.turbine)
   testImplementation(Config.Dependencies.coroutinesAndroidTest)
   testImplementation(Config.Dependencies.coroutinesTest)
   androidTestImplementation(Config.Dependencies.testCore)
@@ -110,4 +108,4 @@ dependencies {
   androidTestImplementation(Config.Dependencies.junitExt)
   androidTestImplementation(Config.Dependencies.testRunner)
   androidTestImplementation(Config.Dependencies.espresso)
-} 
+}

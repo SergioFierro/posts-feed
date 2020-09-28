@@ -1,7 +1,8 @@
-package com.sergiofierro.mailapp.persistence
+package com.sergiofierro.mailapp.data.dao
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import com.sergiofierro.mailapp.data.AppDatabase
 import org.junit.After
 import org.junit.Before
 import java.io.IOException

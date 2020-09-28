@@ -1,7 +1,7 @@
 package com.sergiofierro.mailapp.di
 
-import com.sergiofierro.mailapp.networking.PostClient
-import com.sergiofierro.mailapp.persistence.dao.PostDao
+import com.sergiofierro.mailapp.data.local.PostLocalDataSource
+import com.sergiofierro.mailapp.data.remote.PostRemoteDataSource
 import com.sergiofierro.mailapp.repository.PostRepository
 import dagger.Module
 import dagger.Provides
@@ -16,7 +16,7 @@ object RepositoryModule {
   @Provides
   @ActivityRetainedScoped
   fun provideMainRepository(
-    postClient: PostClient,
-    postDao: PostDao
-  ): PostRepository = PostRepository(postClient, postDao)
+    remoteDataSource: PostRemoteDataSource,
+    localDataSource: PostLocalDataSource
+  ): PostRepository = PostRepository(remoteDataSource, localDataSource)
 }

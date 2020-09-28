@@ -1,28 +1,33 @@
 package com.sergiofierro.mailapp.repository
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
+import com.sergiofierro.mailapp.data.Result
+import com.sergiofierro.mailapp.data.Result.Error
+import com.sergiofierro.mailapp.data.local.CommentLocalDataSource
+import com.sergiofierro.mailapp.data.remote.CommentRemoteDataSource
 import com.sergiofierro.mailapp.model.Comment
-import com.sergiofierro.mailapp.networking.CommentClient
-import com.sergiofierro.mailapp.persistence.dao.CommentDao
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class CommentRepository @Inject constructor(
-  private val commentClient: CommentClient,
-  private val commentDao: CommentDao
+  private val remoteDataSource: CommentRemoteDataSource,
+  private val localDataSource: CommentLocalDataSource
 ) {
 
   @WorkerThread
-  suspend fun fetchComments(postId: Int): Flow<List<Comment>> =
-    flow {
-      var comments = commentDao.getByPostId(postId)
-      if (comments.isEmpty()) {
-        comments = commentClient.fetchComments(postId)
-        commentDao.insert(comments)
+  suspend fun fetchComments(postId: Int): Result<List<Comment>> {
+    try {
+      val commentsResponse = remoteDataSource.fetchComments(postId)
+      if (commentsResponse is Result.Success) {
+        localDataSource.save(commentsResponse.data)
+      } else if (commentsResponse is Error) {
+        throw commentsResponse.exception
       }
-      emit(comments)
-    }.flowOn(Dispatchers.IO)
+    } catch (ex: Exception) {
+      return Error(ex)
+    }
+    return localDataSource.getByPostId(postId)
+  }
+
+  fun observerComments(postId: Int): LiveData<Result<List<Comment>>> = localDataSource.observeComments(postId)
 }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="post"
+      type="com.sergiofierro.mailapp.model.Post" />
+
+    <variable
+      name="vm"
+      type="com.sergiofierro.mailapp.ui.detail.DetailViewModel" />
+
+    <variable
+      name="adapter"
+      type="com.sergiofierro.mailapp.ui.adapter.CommentAdapter" />
+  </data>
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.detail.DetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:theme="@style/AppTheme.AppBarOverlay">
+
+      <com.google.android.material.appbar.MaterialToolbar
+        app:navigationIcon="@drawable/ic_arrow_back"
+        android:id="@+id/toolbar"
+        app:favorite="@{vm.isFavorite()}"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:menu="@menu/detail_menu" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/descriptionTitle"
+        style="@style/TitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/descriptionBody"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@{post.body}"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTitle"
+        tools:text="Description body" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userTitle"
+        style="@style/TitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/user"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionBody" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@{vm.user.name}"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/userTitle"
+        tools:text="Name" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@{vm.user.email}"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/userName"
+        tools:text="Email" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userPhone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@{vm.user.phone}"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/userEmail"
+        tools:text="Phone" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userWebsite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@{vm.user.website}"
+        app:layout_constraintEnd_toEndOf="@+id/descriptionTitle"
+        app:layout_constraintStart_toStartOf="@+id/descriptionTitle"
+        app:layout_constraintTop_toBottomOf="@+id/userPhone"
+        tools:text="Website" />
+
+      <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/comments"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/grayBackground"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/comments"
+        android:textAllCaps="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userWebsite" />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="74dp"
+        app:adapter="@{adapter}"
+        app:comments="@{vm.comments}"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/comments" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

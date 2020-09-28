@@ -1,67 +1,97 @@
 package com.sergiofierro.mailapp.repository
 
-import app.cash.turbine.test
 import com.nhaarman.mockitokotlin2.*
+import com.sergiofierro.mailapp.data.Result
+import com.sergiofierro.mailapp.data.local.PostLocalDataSource
+import com.sergiofierro.mailapp.data.remote.PostRemoteDataSource
 import com.sergiofierro.mailapp.model.Post
-import com.sergiofierro.mailapp.networking.PostClient
-import com.sergiofierro.mailapp.persistence.dao.PostDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
+import org.junit.Assert.*
 import org.junit.Test
 import java.io.IOException
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
-@ExperimentalCoroutinesApi
 class PostRepositoryTest {
 
-  private val postClient: PostClient = mock()
-  private val postDao: PostDao = mock()
-  private val postRepository = PostRepository(postClient, postDao)
+  private val remoteDataSource: PostRemoteDataSource = mock()
+  private val localDataSource: PostLocalDataSource = mock()
+  private val repository = PostRepository(remoteDataSource, localDataSource)
 
   @Test
-  fun `Fetch posts with no posts stored should call api and return expected items`() {
+  fun `Fetch posts should call api and return expected items`() {
     runBlocking {
-      val expectedResponse = listOf<Post>(mock())
-      whenever(postDao.getAll()).thenReturn(emptyList())
-      whenever(postClient.fetchPosts()).thenReturn(expectedResponse)
-      postRepository.fetchPosts().test {
-        assertEquals(expectedResponse.size, expectItem().size)
-        expectComplete()
-      }
-      verify(postDao).getAll()
-      verify(postClient).fetchPosts()
+      val posts = listOf<Post>(mock())
+      whenever(remoteDataSource.fetchPosts()).thenReturn(Result.Success(posts))
+      whenever(localDataSource.getAll()).thenReturn(Result.Success(posts))
+      val result = repository.fetchAll()
+      verify(localDataSource).save(posts)
+      assertTrue(result is Result.Success)
+      assertEquals(posts, (result as Result.Success).data)
     }
   }
 
   @Test
-  fun `Fetch posts from database should return expected items`() {
-    runBlocking {
-      val expectedResponse = listOf<Post>(mock())
-      whenever(postDao.getAll()).thenReturn(expectedResponse)
-      postRepository.fetchPosts().test {
-        assertEquals(expectedResponse.size, expectItem().size)
-        expectComplete()
-      }
-      verify(postDao).getAll()
-      verify(postClient, never()).fetchPosts()
-    }
-  }
-
-  @InternalCoroutinesApi
-  @Test
-  fun `Fetch posts with exception should fail`() {
+  fun `Fetch posts should return error`() {
     runBlocking {
       val expectedError = IOException()
-      given(postClient.fetchPosts()).willAnswer {
+      given(remoteDataSource.fetchPosts()).willAnswer {
         throw expectedError
       }
-      postRepository.fetchPosts().test {
-        assertEquals(expectedError::class.java, expectError()::class.java)
+      val result = repository.fetchAll()
+      assertTrue(result is Result.Error)
+      assertEquals(expectedError, (result as Result.Error).exception)
+    }
+  }
+
+  @Test
+  fun `Delete post should call local data source`() {
+    runBlocking {
+      val post: Post = mock()
+      repository.delete(post)
+      verify(localDataSource).delete(post)
+    }
+  }
+
+  @Test
+  fun `Delete posts should call local data source`() {
+    runBlocking {
+      repository.deleteAll()
+      verify(localDataSource).deleteAll()
+    }
+  }
+
+  @Test
+  fun `Set favorite to true should modify favorite boolean and save to local data source`() {
+    runBlocking {
+      val post = Post(1, 1, "title", "body", favorite = false, unread = true)
+      val capturedPost = argumentCaptor<Post>().apply {
+        whenever(localDataSource.save(capture())).thenReturn(Unit)
       }
-      verify(postClient).fetchPosts()
+      repository.changeFavorite(post)
+      assertTrue(capturedPost.firstValue.favorite)
+    }
+  }
+
+  @Test
+  fun `Set favorite to false should modify favorite boolean and save to local data source`() {
+    runBlocking {
+      val post = Post(1, 1, "title", "body", favorite = true, unread = true)
+      val capturedPost = argumentCaptor<Post>().apply {
+        whenever(localDataSource.save(capture())).thenReturn(Unit)
+      }
+      repository.changeFavorite(post)
+      assertFalse(capturedPost.firstValue.favorite)
+    }
+  }
+
+  @Test
+  fun `Post read should modify unread boolean and save to local data source`() {
+    runBlocking {
+      val post = Post(1, 1, "title", "body", favorite = true, unread = true)
+      val capturedPost = argumentCaptor<Post>().apply {
+        whenever(localDataSource.save(capture())).thenReturn(Unit)
+      }
+      repository.postRead(post)
+      assertFalse(capturedPost.firstValue.unread)
     }
   }
 }

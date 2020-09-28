@@ -1,70 +1,50 @@
 package com.sergiofierro.mailapp.repository
 
-import app.cash.turbine.test
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import com.sergiofierro.mailapp.data.Result
+import com.sergiofierro.mailapp.data.local.UserLocalDataSource
+import com.sergiofierro.mailapp.data.remote.UserRemoteDataSource
 import com.sergiofierro.mailapp.model.User
-import com.sergiofierro.mailapp.networking.UserClient
-import com.sergiofierro.mailapp.persistence.dao.UserDao
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.io.IOException
-import kotlin.time.ExperimentalTime
 
-@ExperimentalTime
-@ExperimentalCoroutinesApi
 class UserRepositoryTest {
 
-  private val userClient: UserClient = mock()
-  private val userDao: UserDao = mock()
-  private val userRepository = UserRepository(userClient, userDao)
+  private val remoteDataSource: UserRemoteDataSource = mock()
+  private val localDataSource: UserLocalDataSource = mock()
+  private val repository = UserRepository(remoteDataSource, localDataSource)
 
   @Test
-  fun `Fetch user that is not stored should call api and return expected user`() {
+  fun `Fetch user by id should call api and return expected user`() {
     runBlocking {
-      val userId = 123
-      val expectedResponse: User = mock()
-      whenever(userDao.get(userId)).thenReturn(null)
-      whenever(userClient.fetchUser(userId)).thenReturn(expectedResponse)
-      userRepository.fetchUser(userId).test {
-        assertEquals(expectedResponse, expectItem())
-        expectComplete()
-      }
-      verify(userDao).get(userId)
-      verify(userClient).fetchUser(userId)
+      val id = 123
+      val user: User = mock()
+      whenever(remoteDataSource.get(id)).thenReturn(Result.Success(user))
+      whenever(localDataSource.get(id)).thenReturn(Result.Success(user))
+      val result = repository.fetchUser(id)
+      verify(localDataSource).save(user)
+      Assert.assertTrue(result is Result.Success)
+      assertEquals(user, (result as Result.Success).data)
     }
   }
 
   @Test
-  fun `Fetch comments from database should return expected items`() {
+  fun `Fetch user by id should return error`() {
     runBlocking {
-      val userId = 123
-      val expectedResponse: User = mock()
-      whenever(userDao.get(userId)).thenReturn(expectedResponse)
-      userRepository.fetchUser(userId).test {
-        assertEquals(expectedResponse, expectItem())
-        expectComplete()
-      }
-      verify(userDao).get(userId)
-      verify(userClient, never()).fetchUser(any())
-    }
-  }
-
-  @InternalCoroutinesApi
-  @Test
-  fun `Fetch comments with exception should fail`() {
-    runBlocking {
+      val id = 123
       val expectedError = IOException()
-      given(userClient.fetchUser(any())).willAnswer {
+      given(remoteDataSource.get(id)).willAnswer {
         throw expectedError
       }
-      userRepository.fetchUser(123).test {
-        Assert.assertEquals(expectedError::class.java, expectError()::class.java)
-      }
-      verify(userClient).fetchUser(any())
+      val result = repository.fetchUser(id)
+      Assert.assertTrue(result is Result.Error)
+      assertEquals(expectedError, (result as Result.Error).exception)
     }
   }
 }

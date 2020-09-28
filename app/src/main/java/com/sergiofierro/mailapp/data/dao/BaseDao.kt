@@ -1,9 +1,8 @@
-package com.sergiofierro.mailapp.persistence.dao
+package com.sergiofierro.mailapp.data.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
-import androidx.room.Update
 
 interface BaseDao<in T> {
 

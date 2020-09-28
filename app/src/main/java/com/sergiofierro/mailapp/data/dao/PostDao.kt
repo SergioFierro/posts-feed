@@ -1,5 +1,6 @@
-package com.sergiofierro.mailapp.persistence.dao
+package com.sergiofierro.mailapp.data.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Query
 import com.sergiofierro.mailapp.model.Post
@@ -8,7 +9,10 @@ import com.sergiofierro.mailapp.model.Post
 interface PostDao : BaseDao<Post> {
 
   @Query("SELECT * FROM Post")
-  fun getAll(): List<Post>
+  fun observePosts(): LiveData<List<Post>>
+
+  @Query("SELECT * FROM Post")
+  suspend fun getAll(): List<Post>
 
   @Query("DELETE FROM Post")
   fun deleteAll()

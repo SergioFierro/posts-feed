@@ -1,7 +1,6 @@
-package com.sergiofierro.mailapp.persistence
+package com.sergiofierro.mailapp.data.dao
 
 import com.sergiofierro.mailapp.model.Post
-import com.sergiofierro.mailapp.persistence.dao.PostDao
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Before

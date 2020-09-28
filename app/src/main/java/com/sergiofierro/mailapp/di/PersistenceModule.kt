@@ -2,10 +2,10 @@ package com.sergiofierro.mailapp.di
 
 import android.app.Application
 import androidx.room.Room
-import com.sergiofierro.mailapp.persistence.AppDatabase
-import com.sergiofierro.mailapp.persistence.dao.CommentDao
-import com.sergiofierro.mailapp.persistence.dao.PostDao
-import com.sergiofierro.mailapp.persistence.dao.UserDao
+import com.sergiofierro.mailapp.data.AppDatabase
+import com.sergiofierro.mailapp.data.dao.CommentDao
+import com.sergiofierro.mailapp.data.dao.PostDao
+import com.sergiofierro.mailapp.data.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
