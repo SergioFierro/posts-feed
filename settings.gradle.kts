@@ -1,2 +1,2 @@
 include(":app")
-rootProject.name = "MailApp"
+rootProject.name = "PostsFeed"

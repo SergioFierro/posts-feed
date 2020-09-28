@@ -7,11 +7,11 @@
 
     <variable
       name="vm"
-      type="com.sergiofierro.mailapp.ui.main.PostViewModel" />
+      type="com.sergiofierro.posts_feed.ui.main.PostViewModel" />
 
     <variable
       name="adapter"
-      type="com.sergiofierro.mailapp.ui.adapter.PostAdapter" />
+      type="com.sergiofierro.posts_feed.ui.adapter.PostAdapter" />
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout

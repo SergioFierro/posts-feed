@@ -7,11 +7,11 @@
 
     <variable
       name="vm"
-      type="com.sergiofierro.mailapp.ui.main.MainViewModel" />
+      type="com.sergiofierro.posts_feed.ui.main.MainViewModel" />
 
     <variable
       name="adapter"
-      type="com.sergiofierro.mailapp.ui.main.SectionsPagerAdapter" />
+      type="com.sergiofierro.posts_feed.ui.main.SectionsPagerAdapter" />
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

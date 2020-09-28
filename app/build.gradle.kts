@@ -11,7 +11,7 @@ android {
   buildToolsVersion(Config.Versions.buildTools)
 
   defaultConfig {
-    applicationId = "com.sergiofierro.mailapp"
+    applicationId = "com.sergiofierro.posts_feed"
     minSdkVersion(Config.Versions.minSDK)
     targetSdkVersion(Config.Versions.targetSDK)
     versionCode = 1
@@ -104,7 +104,6 @@ dependencies {
   testImplementation(Config.Dependencies.coroutinesAndroidTest)
   testImplementation(Config.Dependencies.coroutinesTest)
   androidTestImplementation(Config.Dependencies.testCore)
-  androidTestImplementation(Config.Dependencies.truth)
   androidTestImplementation(Config.Dependencies.junitExt)
   androidTestImplementation(Config.Dependencies.testRunner)
   androidTestImplementation(Config.Dependencies.espresso)

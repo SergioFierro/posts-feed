@@ -44,7 +44,6 @@ object Config {
     const val coroutinesAndroidTest = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutinesTest}"
     const val coroutinesTest = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutinesTest}"
     const val testCore = "androidx.test:core:${Versions.testCore}"
-    const val truth = "com.google.truth:truth:${Versions.truth}"
     const val junitExt = "androidx.test.ext:junit:${Versions.junitExt}"
     const val testRunner = "com.android.support.test:runner:${Versions.testRunner}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espresso}"
@@ -61,7 +60,7 @@ object Config {
   }
 
   object Versions {
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.10"
     const val gradle = "4.0.1"
     const val compileSDK = 30
     const val minSDK = 23
@@ -86,9 +85,8 @@ object Config {
     const val coreTesting = "2.1.0"
     const val core = "1.3.0"
     const val material = "1.2.0"
-    const val coroutinesTest = "1.3.7"
+    const val coroutinesTest = "1.3.9"
     const val testCore = "1.3.0"
-    const val truth = "1.0.1"
     const val junitExt = "1.1.2"
     const val testRunner = "1.3.0-beta01"
     const val espresso = "3.3.0"

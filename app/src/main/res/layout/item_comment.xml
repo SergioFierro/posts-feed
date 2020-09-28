@@ -8,7 +8,7 @@
 
     <variable
       name="comment"
-      type="com.sergiofierro.mailapp.model.Comment" />
+      type="com.sergiofierro.posts_feed.model.Comment" />
 
   </data>
 

@@ -7,15 +7,15 @@
 
     <variable
       name="post"
-      type="com.sergiofierro.mailapp.model.Post" />
+      type="com.sergiofierro.posts_feed.model.Post" />
 
     <variable
       name="vm"
-      type="com.sergiofierro.mailapp.ui.detail.DetailViewModel" />
+      type="com.sergiofierro.posts_feed.ui.detail.DetailViewModel" />
 
     <variable
       name="adapter"
-      type="com.sergiofierro.mailapp.ui.adapter.CommentAdapter" />
+      type="com.sergiofierro.posts_feed.ui.adapter.CommentAdapter" />
   </data>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
