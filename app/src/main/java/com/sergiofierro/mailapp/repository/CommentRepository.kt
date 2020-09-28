@@ -9,13 +9,18 @@ import com.sergiofierro.mailapp.data.remote.CommentRemoteDataSource
 import com.sergiofierro.mailapp.model.Comment
 import javax.inject.Inject
 
-class CommentRepository @Inject constructor(
+interface CommentRepository {
+  suspend fun fetchComments(postId: Int): Result<List<Comment>>
+  fun observerComments(postId: Int): LiveData<Result<List<Comment>>>
+}
+
+class DefaultCommentRepository @Inject constructor(
   private val remoteDataSource: CommentRemoteDataSource,
   private val localDataSource: CommentLocalDataSource
-) {
+) : CommentRepository {
 
   @WorkerThread
-  suspend fun fetchComments(postId: Int): Result<List<Comment>> {
+  override suspend fun fetchComments(postId: Int): Result<List<Comment>> {
     try {
       val commentsResponse = remoteDataSource.fetchComments(postId)
       if (commentsResponse is Result.Success) {
@@ -29,5 +34,5 @@ class CommentRepository @Inject constructor(
     return localDataSource.getByPostId(postId)
   }
 
-  fun observerComments(postId: Int): LiveData<Result<List<Comment>>> = localDataSource.observeComments(postId)
+  override fun observerComments(postId: Int): LiveData<Result<List<Comment>>> = localDataSource.observeComments(postId)
 }

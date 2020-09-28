@@ -10,13 +10,22 @@ import com.sergiofierro.mailapp.data.remote.PostRemoteDataSource
 import com.sergiofierro.mailapp.model.Post
 import javax.inject.Inject
 
-class PostRepository @Inject constructor(
+interface PostRepository {
+  suspend fun fetchAll(): Result<List<Post>>
+  suspend fun delete(post: Post)
+  suspend fun deleteAll()
+  suspend fun changeFavorite(post: Post)
+  suspend fun postRead(post: Post)
+  fun observePosts(): LiveData<Result<List<Post>>>
+}
+
+class DefaultPostRepository @Inject constructor(
   private val remoteDataSource: PostRemoteDataSource,
   private val localDataSource: PostLocalDataSource
-) {
+) : PostRepository {
 
   @WorkerThread
-  suspend fun fetchAll(): Result<List<Post>> {
+  override suspend fun fetchAll(): Result<List<Post>> {
     try {
       val postsResponse = remoteDataSource.fetchPosts()
       if (postsResponse is Success) {
@@ -32,26 +41,26 @@ class PostRepository @Inject constructor(
   }
 
   @WorkerThread
-  suspend fun delete(post: Post) {
+  override suspend fun delete(post: Post) {
     localDataSource.delete(post)
   }
 
   @WorkerThread
-  suspend fun deleteAll() {
+  override suspend fun deleteAll() {
     localDataSource.deleteAll()
   }
 
   @WorkerThread
-  suspend fun changeFavorite(post: Post) {
+  override suspend fun changeFavorite(post: Post) {
     post.favorite = !post.favorite
     localDataSource.save(post)
   }
 
   @WorkerThread
-  suspend fun postRead(post: Post) {
+  override suspend fun postRead(post: Post) {
     post.unread = false
     localDataSource.save(post)
   }
 
-  fun observePosts(): LiveData<Result<List<Post>>> = localDataSource.observePosts()
+  override fun observePosts(): LiveData<Result<List<Post>>> = localDataSource.observePosts()
 }

@@ -9,13 +9,18 @@ import com.sergiofierro.mailapp.data.remote.UserRemoteDataSource
 import com.sergiofierro.mailapp.model.User
 import javax.inject.Inject
 
-class UserRepository @Inject constructor(
+interface UserRepository {
+  suspend fun fetchUser(id: Int): Result<User?>
+  fun observerUser(id: Int): LiveData<Result<User?>>
+}
+
+class DefaultUserRepository @Inject constructor(
   private val remoteDataSource: UserRemoteDataSource,
   private val localDataSource: UserLocalDataSource
-) {
+) : UserRepository {
 
   @WorkerThread
-  suspend fun fetchUser(id: Int): Result<User?> {
+  override suspend fun fetchUser(id: Int): Result<User?> {
     try {
       val userResponse = remoteDataSource.get(id)
       if (userResponse is Result.Success) {
@@ -29,5 +34,5 @@ class UserRepository @Inject constructor(
     return localDataSource.get(id)
   }
 
-  fun observerUser(id: Int): LiveData<Result<User?>> = localDataSource.observeUser(id)
+  override fun observerUser(id: Int): LiveData<Result<User?>> = localDataSource.observeUser(id)
 }

@@ -1,5 +1,6 @@
 package com.sergiofierro.mailapp.ui.detail
 
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -19,7 +20,8 @@ class DetailViewModel @ViewModelInject constructor(
   private val commentRepository: CommentRepository
 ) : ViewModel() {
 
-  private var _post: MutableLiveData<Post> = MutableLiveData()
+  @VisibleForTesting
+  var _post: MutableLiveData<Post> = MutableLiveData()
   val user: LiveData<User?> = _post.switchMap { post ->
     viewModelScope.launch {
       userRepository.fetchUser(post.userId)

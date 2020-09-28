@@ -14,7 +14,7 @@ class PostRepositoryTest {
 
   private val remoteDataSource: PostRemoteDataSource = mock()
   private val localDataSource: PostLocalDataSource = mock()
-  private val repository = PostRepository(remoteDataSource, localDataSource)
+  private val repository = DefaultPostRepository(remoteDataSource, localDataSource)
 
   @Test
   fun `Fetch posts should call api and return expected items`() {

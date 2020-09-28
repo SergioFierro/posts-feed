@@ -1,4 +1,4 @@
-package com.sergiofierro.mailapp.ui
+package com.sergiofierro.mailapp.ui.main
 
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.sergiofierro.mailapp.R
 import com.sergiofierro.mailapp.databinding.ActivityMainBinding
-import com.sergiofierro.mailapp.ui.main.SectionsPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

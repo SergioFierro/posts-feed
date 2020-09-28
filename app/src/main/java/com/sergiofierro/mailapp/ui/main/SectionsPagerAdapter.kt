@@ -14,7 +14,7 @@ enum class ListType(val title: Int) {
 class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   override fun getItem(position: Int): Fragment =
-    PlaceholderFragment.newInstance(ListType.values()[position])
+    PostFragment.newInstance(ListType.values()[position])
 
   override fun getPageTitle(position: Int): CharSequence? =
     context.resources.getString(ListType.values()[position].title)

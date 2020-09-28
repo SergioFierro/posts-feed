@@ -18,7 +18,7 @@ class CommentRepositoryTest {
 
   private val remoteDataSource: CommentRemoteDataSource = mock()
   private val localDataSource: CommentLocalDataSource = mock()
-  private val repository = CommentRepository(remoteDataSource, localDataSource)
+  private val repository = DefaultCommentRepository(remoteDataSource, localDataSource)
 
   @Test
   fun `Fetch comments should call api and return expected items`() {

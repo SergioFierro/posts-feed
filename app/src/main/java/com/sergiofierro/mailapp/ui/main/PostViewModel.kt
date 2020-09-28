@@ -8,7 +8,7 @@ import com.sergiofierro.mailapp.model.Post
 import com.sergiofierro.mailapp.repository.PostRepository
 import kotlinx.coroutines.launch
 
-class PageViewModel @ViewModelInject constructor(
+class PostViewModel @ViewModelInject constructor(
   private val postRepository: PostRepository
 ) : ViewModel() {
 

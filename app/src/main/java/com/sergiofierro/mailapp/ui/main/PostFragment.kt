@@ -16,14 +16,14 @@ import com.sergiofierro.mailapp.util.SwipeToDeleteTouchHelper
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PlaceholderFragment : Fragment() {
+class PostFragment : Fragment() {
 
-  private val pageViewModel: PageViewModel by viewModels()
+  private val postViewModel: PostViewModel by viewModels()
   private lateinit var binding: FragmentMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    pageViewModel.setListType(arguments?.getSerializable(ARG_SECTION) as ListType)
+    postViewModel.setListType(arguments?.getSerializable(ARG_SECTION) as ListType)
   }
 
   override fun onCreateView(
@@ -32,12 +32,12 @@ class PlaceholderFragment : Fragment() {
   ): View? {
     binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
     binding.apply {
-      lifecycleOwner = this@PlaceholderFragment
+      lifecycleOwner = this@PostFragment
       val postAdapter = PostAdapter { post ->
-        pageViewModel.deletePost(post)
+        postViewModel.deletePost(post)
       }
       adapter = postAdapter
-      vm = pageViewModel
+      vm = postViewModel
       recyclerView.setHasFixedSize(true)
       recyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
       val itemTouchHelper = ItemTouchHelper(SwipeToDeleteTouchHelper(postAdapter))
@@ -52,7 +52,7 @@ class PlaceholderFragment : Fragment() {
     private const val ARG_SECTION = "section"
 
     @JvmStatic
-    fun newInstance(section: ListType): PlaceholderFragment = PlaceholderFragment().apply {
+    fun newInstance(section: ListType): PostFragment = PostFragment().apply {
       arguments = Bundle().apply {
         putSerializable(ARG_SECTION, section)
       }

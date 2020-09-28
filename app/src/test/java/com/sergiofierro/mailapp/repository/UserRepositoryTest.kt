@@ -18,7 +18,7 @@ class UserRepositoryTest {
 
   private val remoteDataSource: UserRemoteDataSource = mock()
   private val localDataSource: UserLocalDataSource = mock()
-  private val repository = UserRepository(remoteDataSource, localDataSource)
+  private val repository = DefaultUserRepository(remoteDataSource, localDataSource)
 
   @Test
   fun `Fetch user by id should call api and return expected user`() {

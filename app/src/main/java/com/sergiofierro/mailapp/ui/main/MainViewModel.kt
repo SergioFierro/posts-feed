@@ -1,4 +1,4 @@
-package com.sergiofierro.mailapp.ui
+package com.sergiofierro.mailapp.ui.main
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
