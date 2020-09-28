@@ -1,4 +1,4 @@
-package com.sergiofierro.post_feed.ui.detail
+package com.sergiofierro.posts_feed.ui.detail
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.sergiofierro.posts_feed.MainCoroutineRule
@@ -9,10 +9,8 @@ import com.sergiofierro.posts_feed.repository.mock.CommentRepositoryMock
 import com.sergiofierro.posts_feed.repository.mock.PostRepositoryMock
 import com.sergiofierro.posts_feed.repository.mock.UserRepositoryMock
 import com.sergiofierro.posts_feed.util.observeForTesting
-import junit.framework.Assert.assertFalse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
